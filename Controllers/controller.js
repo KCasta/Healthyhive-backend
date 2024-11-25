@@ -103,39 +103,49 @@ const verifyEmail = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    // check if user exists
+
+    // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: "user not found" });
+      return res.status(404).json({ message: "User not found" });
     }
-    // check if password is correct
+
+    // Check if password is correct
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
-    // check if user email is verified.If not send verification email
 
+    // Check if user's email is verified
     if (!user.isEmailVerified) {
-      // send verification email again
+      // Send verification email again
       await SendVerificationMail(user);
-      // Generate and send verificaation token
+
+      // Generate and send verification token
       const userPayload = {
         _id: user._id,
         email: user.email,
       };
-      // generate token and send it
-      const verficationToken = generateToken(userPayload);
-      return res
-        .status(200)
-        .json({ message: "verification email sent", verficationToken });
+
+      const verificationToken = generateToken(userPayload);
+
+      return res.status(200).json({
+        message: "Verification email sent. Please verify your email.",
+        verificationToken,
+      });
     }
-    // Generate userpayload and send token
-    const userpayload = {
+
+    // User is verified, generate and send access token
+    const userPayload = {
       _id: user._id,
       email: user.email,
     };
-    const accessToken = generateAccessToken(userpayload);
-    return res.status(200).json({ message: "login successful", accessToken });
+    const accessToken = generateAccessToken(userPayload);
+
+    return res.status(200).json({
+      message: "Login successful",
+      accessToken,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
