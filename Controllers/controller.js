@@ -91,7 +91,14 @@ const verifyEmail = async (req, res) => {
         email: user.email,
       };
       const accessToken = generateAccessToken(userpayload);
-      return res.status(200).json({ message: "Email verified" });
+      return res.status(200).json({
+        message: "Email verified",
+        accessToken,
+        userInfo: {
+          _id: user._id,
+          fullName: user.fullName,
+        },
+      });
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -135,7 +142,13 @@ const loginUser = async (req, res) => {
       email: user.email,
     };
     const accessToken = generateAccessToken(userpayload);
-    return res.status(200).json({ message: "login successful", accessToken });
+    return res
+      .status(200)
+      .json({
+        message: "login successful",
+        accessToken,
+        userInfo: { _id: user._id, fullName: user.fullName },
+      });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
