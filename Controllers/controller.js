@@ -147,7 +147,7 @@ const loginUser = async (req, res) => {
       _id: user._id,
       email: user.email,
     };
-    const accessToken = generateAccessToken(userpayload);
+    const accessToken = generateAccessToken(userPayload);
     return res.status(200).json({
       message: "login successful",
       accessToken,
