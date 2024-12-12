@@ -11,7 +11,7 @@ const port = process.env.PORT;
 const app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://healthyhive-frontend.vercel.app/"], // Allowed origins
+  origin: ["http://localhost:5173", "https://healthyhive-frontend.vercel.app"], // Allowed origins
   methods: "*",
   allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
   credentials: true, // Allow cookies or authorization headers
