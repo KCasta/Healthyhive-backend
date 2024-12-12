@@ -23,7 +23,6 @@ const createUser = async (req, res) => {
     // hashing password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    console.log(hashedPassword);
 
     // save user
     const user = await User.create({
@@ -53,11 +52,11 @@ const createUser = async (req, res) => {
 const verifyEmail = async (req, res) => {
   const { otp } = req.body;
   // check if user exists
-  console.log(otp);
+
   // extract the token from the header
   let token = null;
   const authHeader = req.headers["authorization"];
-  console.log(authHeader);
+
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
   }
@@ -68,7 +67,6 @@ const verifyEmail = async (req, res) => {
   // verify the token
   try {
     const payload = jwt.verify(token, process.env.JWT_VERIFY_SECRET);
-    console.log(payload);
 
     const userOtp = await Otp.findOne({
       user: payload._id,

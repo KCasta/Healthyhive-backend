@@ -26,7 +26,7 @@ const ensureIsAutenticated = async (req, res, next) => {
     }
     // attach user to the request object
     req.user = user;
-    console.log("I am here");
+
     next();
   } catch (error) {
     return res.status(500).json({ message: error.message });
